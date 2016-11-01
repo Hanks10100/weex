@@ -6,7 +6,6 @@ const { init, config } = runtime
 config.frameworks = frameworks
 const { native, transformer } = subversion
 
-runtime.freezePrototype()
 runtime.setNativeConsole()
 runtime.setNativeTimer()
 
