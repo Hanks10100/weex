@@ -83,9 +83,9 @@ function build (name) {
     console.log(`\n => start to build ${name} (${pkgName})\n`)
     return new Promise((resolve, reject) => {
       runRollup(config).then(() => {
-        runRollup(minifyConfig).then(() => {
-          zip(minifyConfig.dest, resolve)
-        })
+        // runRollup(minifyConfig).then(() => {
+        //   zip(minifyConfig.dest, resolve)
+        // })
       })
     })
   }
