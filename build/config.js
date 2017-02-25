@@ -5,8 +5,6 @@ const replace = require('rollup-plugin-replace')
 const postcss = require('rollup-plugin-postcss')
 const nodeResolve = require('rollup-plugin-node-resolve')
 const uglify = require('rollup-plugin-uglify')
-const commonjs = require('rollup-plugin-commonjs')
-const buble = require('rollup-plugin-buble')
 const subversion = require('../package.json').subversion
 
 const frameworkBanner = `;(this.getJSFMVersion = function()`
@@ -92,9 +90,7 @@ function getConfig (name, minify) {
         'process.env.NODE_ENV': JSON.stringify(minify ? 'production' : 'development'),
         'process.env.VUE_ENV': JSON.stringify('WEEX'),
         'process.env.NODE_DEBUG': false
-      }),
-      commonjs(),
-      buble()
+      })
     ])
   }
 
