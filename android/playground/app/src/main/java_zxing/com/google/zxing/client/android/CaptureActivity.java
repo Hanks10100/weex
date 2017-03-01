@@ -58,8 +58,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.weex.R;
-import com.alibaba.weex.WXPageActivity;
+import com.alibaba.wasmWeex.R;
+import com.alibaba.wasmWeex.WXPageActivity;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
 

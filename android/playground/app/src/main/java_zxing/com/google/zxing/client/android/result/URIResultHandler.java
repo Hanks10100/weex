@@ -18,7 +18,7 @@ package com.google.zxing.client.android.result;
 
 import android.app.Activity;
 
-import com.alibaba.weex.R;
+import com.alibaba.wasmWeex.R;
 import com.google.zxing.client.android.LocaleManager;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.URIParsedResult;

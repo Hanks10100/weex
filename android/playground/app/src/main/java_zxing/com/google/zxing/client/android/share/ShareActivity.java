@@ -29,7 +29,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alibaba.weex.R;
+import com.alibaba.wasmWeex.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.android.Contents;
 import com.google.zxing.client.android.Intents;

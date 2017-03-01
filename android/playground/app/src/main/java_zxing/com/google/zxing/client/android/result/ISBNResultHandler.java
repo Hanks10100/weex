@@ -18,7 +18,7 @@ package com.google.zxing.client.android.result;
 
 import android.app.Activity;
 
-import com.alibaba.weex.R;
+import com.alibaba.wasmWeex.R;
 import com.google.zxing.Result;
 import com.google.zxing.client.result.ISBNParsedResult;
 import com.google.zxing.client.result.ParsedResult;

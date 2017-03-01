@@ -28,7 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
-import com.alibaba.weex.R;
+import com.alibaba.wasmWeex.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
