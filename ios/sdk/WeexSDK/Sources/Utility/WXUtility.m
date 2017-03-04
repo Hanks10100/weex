@@ -27,7 +27,7 @@
 void WXPerformBlockOnMainThread(void (^ _Nonnull block)())
 {
     if (!block) return;
-    
+
     if ([NSThread isMainThread]) {
         block();
     } else {
@@ -40,7 +40,7 @@ void WXPerformBlockOnMainThread(void (^ _Nonnull block)())
 void WXPerformBlockSyncOnMainThread(void (^ _Nonnull block)())
 {
     if (!block) return;
-    
+
     if ([NSThread isMainThread]) {
         block();
     } else {
@@ -59,7 +59,7 @@ void WXSwizzleInstanceMethod(Class className, SEL original, SEL replaced)
 {
     Method originalMethod = class_getInstanceMethod(className, original);
     Method newMethod = class_getInstanceMethod(className, replaced);
-    
+
     BOOL didAddMethod = class_addMethod(className, original, method_getImplementation(newMethod), method_getTypeEncoding(newMethod));
     if (didAddMethod) {
         class_replaceMethod(className, replaced, method_getImplementation(newMethod), method_getTypeEncoding(newMethod));
@@ -72,7 +72,7 @@ void WXSwizzleInstanceMethodWithBlock(Class class, SEL original, id block, SEL r
 {
     Method originalMethod = class_getInstanceMethod(class, original);
     IMP implementation = imp_implementationWithBlock(block);
-    
+
     class_addMethod(class, replaced, implementation, method_getTypeEncoding(originalMethod));
     Method newMethod = class_getInstanceMethod(class, replaced);
     method_exchangeImplementations(originalMethod, newMethod);
@@ -122,7 +122,7 @@ static BOOL WXNotStat;
 + (void)performBlock:(void (^)())block onThread:(NSThread *)thread
 {
     if (!thread || !block) return;
-    
+
     if ([NSThread currentThread] == thread) {
         block();
     } else {
@@ -147,11 +147,11 @@ static BOOL WXNotStat;
     NSString *machine = [self deviceName] ? : @"";
     NSString *appVersion = [WXAppConfiguration appVersion] ? : @"";
     NSString *appName = [WXAppConfiguration appName] ? : @"";
-    
+
     CGFloat deviceWidth = [self portraitScreenSize].width;
     CGFloat deviceHeight = [self portraitScreenSize].height;
     CGFloat scale = [[UIScreen mainScreen] scale];
-    
+
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{
                                     @"platform":platform,
                                     @"osVersion":sysVersion,
@@ -167,7 +167,7 @@ static BOOL WXNotStat;
     if ([WXSDKEngine customEnvironment]) {
         [data addEntriesFromDictionary:[WXSDKEngine customEnvironment]];
     }
-    
+
     return data;
 }
 
@@ -191,22 +191,22 @@ static BOOL WXNotStat;
 {
     // Device UA
     NSString *deviceUA = [NSString stringWithFormat:@"%@(iOS/%@)", [self deviceName]?:@"UNKNOWN", [[UIDevice currentDevice] systemVersion]]?:@"0.0.0";
-    
+
     // App UA
     NSString *appUA = [NSString stringWithFormat:@"%@(%@/%@)", [WXAppConfiguration appGroup]?:@"WeexGroup", [WXAppConfiguration appName]?:@"WeexApp", [WXAppConfiguration appVersion]?:@"0.0.0"];
 
     // Weex UA
     NSString *weexUA = [NSString stringWithFormat:@"Weex/%@", WX_SDK_VERSION];
-    
+
     // external UA
     NSString *externalUA = [WXAppConfiguration externalUserAgent] ? [NSString stringWithFormat:@" %@", [WXAppConfiguration externalUserAgent]] : @"";
-    
+
     // Screen Size
     CGFloat w = [[UIScreen mainScreen] bounds].size.width;
     CGFloat h = [[UIScreen mainScreen] bounds].size.height;
     CGFloat s = [[UIScreen mainScreen] scale];
     NSString * screenUA = [NSString stringWithFormat:@"%dx%d", (int)(s * w), (int)(s * h)];
-    
+
     // New UA
     return [NSString stringWithFormat:@"%@ %@ %@%@ %@", deviceUA, appUA, weexUA, externalUA, screenUA];
 }
@@ -214,7 +214,7 @@ static BOOL WXNotStat;
 + (id)objectFromJSON:(NSString *)json
 {
     if (!json) return nil;
-    
+
     NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error = nil;
     id obj = [NSJSONSerialization JSONObjectWithData:data
@@ -224,7 +224,7 @@ static BOOL WXNotStat;
         WXLogError(@"%@", [error description]);
         return nil;
     }
-    
+
     return obj;
 }
 
@@ -245,7 +245,7 @@ static BOOL WXNotStat;
 + (NSString *)JSONString:(id)object
 {
     if(!object) return nil;
-    
+
     NSError *error = nil;
     if([object isKindOfClass:[NSArray class]] || [object isKindOfClass:[NSDictionary class]]){
         NSData *data = [NSJSONSerialization dataWithJSONObject:object
@@ -255,9 +255,9 @@ static BOOL WXNotStat;
             WXLogError(@"%@", [error description]);
             return nil;
         }
-        
+
         return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
+
     } else if ([object isKindOfClass:[NSString class]]) {
         NSArray *array = @[object];
         NSData *data = [NSJSONSerialization dataWithJSONObject:array
@@ -267,13 +267,13 @@ static BOOL WXNotStat;
             WXLogError(@"%@", [error description]);
             return nil;
         }
-        
+
         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         if (string.length <= 4) {
             WXLogError(@"json convert length less than 4 chars.");
             return nil;
         }
-        
+
         return [string substringWithRange:NSMakeRange(2, string.length - 4)];
     } else {
         WXLogError(@"object isn't avaliable class");
@@ -286,22 +286,22 @@ static BOOL WXNotStat;
     if ([object isKindOfClass:[NSArray class]]) {
         NSArray *array = (NSArray *)object;
         NSMutableArray *copyObjs = [NSMutableArray array];
-        
+
         [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             id copyObj = [self copyJSONObject:obj];
             [copyObjs insertObject:copyObj atIndex:idx];
         }];
-        
+
         return copyObjs;
     } else if ([object isKindOfClass:[NSDictionary class]]) {
         NSDictionary *dict = (NSDictionary *)object;
         NSMutableDictionary *copyObjs = [NSMutableDictionary dictionary];
-        
+
         [dict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             id copyObj = [self copyJSONObject:obj];
             [copyObjs setObject:copyObj forKey:key];
         }];
-        
+
         return copyObjs;
     } else {
         return [object copy];
@@ -315,7 +315,7 @@ static BOOL WXNotStat;
     if ([[string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
         return true;
     }
-    
+
     return false;
 }
 
@@ -334,7 +334,7 @@ static BOOL WXNotStat;
 {
     CGFloat fontSize = (isnan(size) || size == 0) ?  32 * scaleFactor : size;
     UIFont *font = nil;
-    
+
     WXThreadSafeMutableDictionary *fontFace = [[WXRuleManager sharedInstance] getRule:@"fontFace"];
     WXThreadSafeMutableDictionary *fontFamilyDic = fontFace[fontFamily];
     if (fontFamilyDic[@"localSrc"]){
@@ -343,11 +343,17 @@ static BOOL WXNotStat;
             // if the font file is not the correct font file. it will crash by singal 9
             CFURLRef fontURL = CFURLCreateWithFileSystemPath(kCFAllocatorDefault, (__bridge CFStringRef)fpath, kCFURLPOSIXPathStyle, false);
             CGDataProviderRef fontDataProvider = CGDataProviderCreateWithURL(fontURL);
-            CFRelease(fontURL);
+            if (fontURL) {
+                CFRelease(fontURL);
+            }
             CGFontRef graphicFont = CGFontCreateWithDataProvider(fontDataProvider);
-            CGDataProviderRelease(fontDataProvider);
+            if (fontDataProvider) {
+                CGDataProviderRelease(fontDataProvider);
+            }
             CTFontRef smallFont = CTFontCreateWithGraphicsFont(graphicFont, size, NULL, NULL);
-            CFRelease(graphicFont);
+            if (graphicFont) {
+                CFRelease(graphicFont);
+            }
             font = (__bridge_transfer UIFont*)smallFont;
         }else {
             [[WXRuleManager sharedInstance] removeRule:@"fontFace" rule:@{@"fontFamily": fontFamily}];
@@ -366,7 +372,7 @@ static BOOL WXNotStat;
     }
     UIFontDescriptor *fontD = font.fontDescriptor;
     UIFontDescriptorSymbolicTraits traits = 0;
-    
+
     traits = (textStyle == WXTextStyleItalic) ? (traits | UIFontDescriptorTraitItalic) : traits;
     traits = (fabs(textWeight-(WX_SYS_VERSION_LESS_THAN(@"8.2")?0.4:UIFontWeightBold)) <= 1e-6) ? (traits | UIFontDescriptorTraitBold) : traits;
     if (traits != 0) {
@@ -376,7 +382,7 @@ static BOOL WXNotStat;
             font = tempFont;
         }
     }
-    
+
     return font;
 }
 
@@ -417,14 +423,14 @@ static BOOL WXNotStat;
             }
             completionBlock(downloadPath, error);
         }];
-        
+
         [task resume];
     });
 }
 
 + (BOOL)isFileExist:(NSString *)filePath
 {
-    
+
     return [[NSFileManager defaultManager] fileExistsAtPath:filePath];
 }
 
@@ -462,7 +468,7 @@ static BOOL WXNotStat;
     dispatch_once(&onceToken, ^{
         cache = [NSCache new];
         cache.totalCostLimit = 5 * 1024 * 1024;
-        
+
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:nil usingBlock:^(__unused NSNotification *note) {
             [cache removeAllObjects];
         }];
@@ -495,7 +501,7 @@ static BOOL WXNotStat;
         portraitScreenSize = CGSizeMake(MIN(screenSize.width, screenSize.height),
                                         MAX(screenSize.width, screenSize.height));
     });
-    
+
     return portraitScreenSize;
 }
 
@@ -506,7 +512,7 @@ static BOOL WXNotStat;
     dispatch_once(&onceToken, ^{
         defaultScaleFactor = [self portraitScreenSize].width / WXDefaultScreenWidth;
     });
-    
+
     return defaultScaleFactor;
 }
 
@@ -605,7 +611,7 @@ static BOOL WXNotStat;
     const char *str = string.UTF8String;
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     CC_MD5(str, (CC_LONG)strlen(str), result);
-    
+
     return [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
             result[0], result[1], result[2], result[3],
             result[4], result[5], result[6], result[7],
@@ -621,7 +627,7 @@ static BOOL WXNotStat;
     NSString *uuid = [NSString stringWithString:(__bridge NSString *)uuidStringRef];
     CFRelease(uuidRef);
     CFRelease(uuidStringRef);
-    
+
     return [uuid lowercaseString];
 }
 
@@ -669,7 +675,7 @@ static BOOL WXNotStat;
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:subString options:NSRegularExpressionCaseInsensitive error:&error];
     NSUInteger numberOfMatches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, [string length])];
     return numberOfMatches;
-    
+
 }
 
 BOOL WXFloatEqual(CGFloat a, CGFloat b) {
@@ -714,7 +720,7 @@ BOOL WXFloatGreaterThanWithPrecision(CGFloat a, CGFloat b ,double precision){
         case UIReturnKeyDone:
             typeStr = @"done";
             break;
-            
+
         default:
             break;
     }
@@ -750,5 +756,3 @@ CGPoint WXPixelPointResize(CGPoint value)
                               value.y * WXScreenResizeRadio());
     return new;
 }
-
-

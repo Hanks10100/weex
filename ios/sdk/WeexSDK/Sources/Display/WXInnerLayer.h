@@ -6,16 +6,14 @@
  * For the full copyright and license information,please view the LICENSE file in the root directory of this source tree.
  */
 
-#import "WXJSExceptionInfo.h"
+#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
-@protocol WXJSExceptionProtocol<NSObject>
+@interface WXInnerLayer : CAGradientLayer
 
-/**
- * report js exception
- *
- * @param exception {@link WXJSException}
- */
-
-- (void)onJSException:(WXJSExceptionInfo *)exception;
+@property CGFloat boxShadowRadius;
+@property CGColorRef boxShadowColor;
+@property CGSize boxShadowOffset;
+@property CGFloat boxShadowOpacity;
 
 @end

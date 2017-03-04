@@ -202,29 +202,28 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package com.taobao.weex.dom;
+package com.taobao.weex.common;
 
-import android.support.annotation.NonNull;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.taobao.weex.dom.flex.Spacing;
+public class WXJSService implements IWXObject {
+    private String name;
+    private String script;
+    private Map<String, String> options = new HashMap<>();
 
-/**
- * Created by sospartan on 25/10/2016.
- */
+    public String getName() { return name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-public interface ImmutableDomObject {
-  String getRef();
-  @NonNull Spacing getMargin();
-  float getLayoutWidth();
-  float getLayoutHeight();
-  float getLayoutX();
-  float getLayoutY();
-  boolean isFixed();
-  @NonNull WXStyle getStyles();
-  @NonNull WXEvent getEvents();
-  @NonNull WXAttr getAttrs();
-  @NonNull Spacing getPadding();
-  @NonNull Spacing getBorder();
-  Object getExtra();
-  String getType();
+    public String getScript() { return script; }
+    public void setScript(String script) {
+        this.script = script;
+    }
+
+    public Map<String, String> getOptions() { return options; }
+    public void setOptions(Map<String, String> options) {
+        this.options = options;
+    }
 }
