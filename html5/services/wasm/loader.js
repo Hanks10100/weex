@@ -3,14 +3,12 @@ export function request (url) {
     return fetch(url)
   }
   if (typeof weex !== 'undefined' && weex.requireModule) {
-    const stream = weex.requireModule('stream')
     return new Promise((resolve, reject) => {
-      stream.fetch({
-        url,
-        type: 'text'
-      }, res => {
-        res.ok ? resolve(res) : reject(res)
-      })
+      weex.requireModule('stream').fetch({
+        method: 'GET',
+        type: 'text',
+        url
+      }, res => res.ok ? resolve(res) : reject(res))
     })
   }
 
@@ -18,12 +16,21 @@ export function request (url) {
   return new Promise()
 }
 
+function string2array (str) {
+  // const buffer = new ArrayBuffer(str.length)
+  const array = new Uint8Array(str.length)
+  for (let i = 0, n = str.length; i < n; i++) {
+    array[i] = str.charCodeAt(i)
+  }
+  return array
+}
+
 export function toBuffer (response) {
   if (typeof response.arrayBuffer === 'function') {
     return response.arrayBuffer()
   }
   // TODO: convert binary to buffer
-  return new ArrayBuffer(1)
+  return string2array(response.data)
 }
 
 export function adaptApis (instance) {
