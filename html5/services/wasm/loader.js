@@ -12,12 +12,11 @@ export function request (url) {
     })
   }
 
-  // TODO: error
+  // TODO: throw error
   return new Promise()
 }
 
 function string2array (str) {
-  // const buffer = new ArrayBuffer(str.length)
   const array = new Uint8Array(str.length)
   for (let i = 0, n = str.length; i < n; i++) {
     array[i] = str.charCodeAt(i)
@@ -25,12 +24,23 @@ function string2array (str) {
   return array
 }
 
+function string2buffer (str) {
+  const buffer = new ArrayBuffer(str.length)
+  const bufferView = new Uint8Array(buffer)
+  for (let i = 0, n = str.length; i < n; i++) {
+    // the return value of charCodeAt is UTF-16 code, which is betwee [0, 65536)
+    // but Uint8Array only takes [0, 256)
+    // It only works well for wasm bytes.
+    bufferView[i] = str.charCodeAt(i)
+  }
+  return buffer
+}
+
 export function toBuffer (response) {
   if (typeof response.arrayBuffer === 'function') {
     return response.arrayBuffer()
   }
-  // TODO: convert binary to buffer
-  return string2array(response.data)
+  return string2buffer(response.data)
 }
 
 export function adaptApis (instance) {
