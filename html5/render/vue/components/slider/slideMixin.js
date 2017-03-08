@@ -60,7 +60,7 @@ export default {
     },
 
     handleTouchStart (event) {
-      event.preventDefault()
+      //event.preventDefault()
       event.stopPropagation()
       // console.log('touch start', event)
       const touch = event.changedTouches[0]
@@ -94,13 +94,13 @@ export default {
     },
 
     handleTouchEnd (event) {
-      event.preventDefault()
+      //event.preventDefault()
       event.stopPropagation()
       // console.log('touch end')
       const inner = this.$refs.inner
       if (this._touchParams) {
         const { offsetX } = this._touchParams
-        if (inner) {
+        if (inner&&offsetX) {
           const reset = Math.abs(offsetX / this.wrapperWidth) < 0.2
           const direction = offsetX > 0 ? 1 : -1
           const newIndex = reset ? this.currentIndex : (this.currentIndex - direction)
