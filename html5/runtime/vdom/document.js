@@ -105,6 +105,21 @@ Object.assign(Document.prototype, {
   },
 
   /**
+   * Register static CSS styles.
+   * @param {String} scopeId
+   * @param {Object} cssMap
+   */
+  registerStaticStyles (scopeId, cssMap) {
+    if (this.taskCenter) {
+      this.taskCenter.send(
+        'dom',
+        { action: 'registerStaticStyles' },
+        [scopeId || '@GLOBAL', cssMap || {}]
+      )
+    }
+  },
+
+  /**
    * Create the body element.
    * @param {string} type
    * @param {objct} props
