@@ -330,6 +330,23 @@ Object.assign(Element.prototype, {
   },
 
   /**
+   * Set component class name.
+   * @param {String | Array} className
+   */
+  setClassName (scopeId, className) {
+    // TODO: make sure classList is an Array
+    const classList = Array.isArray(className) ? className : String(className).split(/\s*/)
+    const taskCenter = getTaskCenter(this.docId)
+    if (taskCenter) {
+      taskCenter.send(
+        'dom',
+        { action: 'updateClassName' },
+        [this.ref, scopeId, classList]
+      )
+    }
+  },
+
+  /**
    * Add an event handler.
    * @param {string} event type
    * @param {function} event handler
