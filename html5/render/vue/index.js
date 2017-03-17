@@ -1,7 +1,7 @@
 import semver from 'semver'
 import { setViewport } from './env'
 import * as components from './components'
-import styleMixin from './mixins/style'
+// import styleMixin from './mixins/style'
 
 function install (Vue) {
   setViewport()
@@ -29,7 +29,7 @@ function install (Vue) {
       + `[${Object.keys(components).join(', ')}].`)
 
     // merge styles to inline
-    Vue.mixin(styleMixin)
+    // Vue.mixin(styleMixin)
   }
 }
 

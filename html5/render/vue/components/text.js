@@ -28,7 +28,7 @@ export default {
   },
 
   render (createElement) {
-    this.prerender()
+    // this.prerender()
     /* istanbul ignore next */
     if (process.env.NODE_ENV === 'development') {
       validateStyles('text', this.$vnode.data && this.$vnode.data.staticStyle)
