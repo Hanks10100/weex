@@ -41,6 +41,7 @@ function updateElement (el, changes) {
   for (const name in style) {
     el.setStyle(name, style[name], true)
   }
+  el.setClassName(changes.class)
 }
 
 Object.assign(Document.prototype, {

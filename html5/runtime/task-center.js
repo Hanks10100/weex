@@ -95,6 +95,8 @@ export class TaskCenter {
 
 export function init () {
   const DOM_METHODS = {
+    registerStaticStyles: global.registerStaticStyles,
+
     createFinish: global.callCreateFinish,
     updateFinish: global.callUpdateFinish,
     refreshFinish: global.callRefreshFinish,
@@ -106,6 +108,7 @@ export function init () {
     moveElement: global.callMoveElement,
     updateAttrs: global.callUpdateAttrs,
     updateStyle: global.callUpdateStyle,
+    updateClassName: global.callUpdateClassName,
 
     addEvent: global.callAddEvent,
     removeEvent: global.callRemoveEvent

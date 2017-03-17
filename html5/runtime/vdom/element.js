@@ -9,6 +9,8 @@ import {
   getDoc,
   getTaskCenter,
   uniqueId,
+  parseScopeId,
+  parseClassList,
   linkParent,
   nextElement,
   previousElement,
@@ -33,9 +35,11 @@ export default function Element (type = DEFAULT_TAG_NAME, props, isExtended) {
   this.nodeId = uniqueId()
   this.ref = this.nodeId
   this.type = type
+  this.scopeId = parseScopeId(props.attr)
   this.attr = props.attr || {}
   this.style = props.style || {}
   this.classStyle = props.classStyle || {}
+  this.classList = parseClassList(props.class)
   this.event = {}
   this.children = []
   this.pureChildren = []
@@ -333,15 +337,16 @@ Object.assign(Element.prototype, {
    * Set component class name.
    * @param {String | Array} className
    */
-  setClassName (scopeId, className) {
+  setClassName (className, scopeId) {
     // TODO: make sure classList is an Array
-    const classList = Array.isArray(className) ? className : String(className).split(/\s*/)
+    this.classList = Array.isArray(className) ? className : String(className).split(/\s*/)
+    scopeId ? (this.scopeId = scopeId) : (scopeId = this.scopeId)
     const taskCenter = getTaskCenter(this.docId)
     if (taskCenter) {
       taskCenter.send(
         'dom',
         { action: 'updateClassName' },
-        [this.ref, scopeId, classList]
+        [this.ref, scopeId, this.classList]
       )
     }
   },
@@ -415,6 +420,12 @@ Object.assign(Element.prototype, {
       attr: this.attr,
       style: this.toStyle()
     }
+    if (this.scopeId) {
+      result.scopeId = this.scopeId
+    }
+    if (this.classList && this.classList.length) {
+      result.attr.classList = this.classList
+    }
     const event = Object.keys(this.event)
     if (event.length) {
       result.event = event
@@ -431,6 +442,7 @@ Object.assign(Element.prototype, {
    */
   toString () {
     return '<' + this.type +
+    (this.classList.length ? ` class="${this.classList.join(' ')}"` : '') +
     ' attr=' + JSON.stringify(this.attr) +
     ' style=' + JSON.stringify(this.toStyle()) + '>' +
     this.pureChildren.map((child) => child.toString()).join('') +

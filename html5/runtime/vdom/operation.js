@@ -63,6 +63,21 @@ export function uniqueId () {
   return (nextNodeRef++).toString()
 }
 
+// TODO: omit data-v-xxx in attrs
+export function parseScopeId (attrs) {
+  for (const key in attrs) {
+    if (key.match(/^data-v-\w+/i)) {
+      // delete attrs[key]
+      return key
+    }
+  }
+}
+
+// TODO: make sure className is string
+export function parseClassList (className) {
+  return className ? className.split(/\s+/) : []
+}
+
 /**
  * Append body node to documentElement.
  * @param {object} document
