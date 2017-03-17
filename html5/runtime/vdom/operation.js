@@ -63,11 +63,10 @@ export function uniqueId () {
   return (nextNodeRef++).toString()
 }
 
-// TODO: omit data-v-xxx in attrs
 export function parseScopeId (attrs) {
   for (const key in attrs) {
     if (key.match(/^data-v-\w+/i)) {
-      // delete attrs[key]
+      delete attrs[key]
       return key
     }
   }
