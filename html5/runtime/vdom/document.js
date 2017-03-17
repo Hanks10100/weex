@@ -9,7 +9,7 @@ import Element from './element'
 import Listener from '../listener'
 import { TaskCenter } from '../task-center'
 import { createHandler } from '../handler'
-import { addDoc, removeDoc, appendBody, setBody } from './operation'
+import { addDoc, removeDoc, appendBody, setBody, getTaskCenter } from './operation'
 
 export default function Document (id, url, handler) {
   id = id ? id.toString() : ''
@@ -111,11 +111,12 @@ Object.assign(Document.prototype, {
    * @param {Object} cssMap
    */
   registerStaticStyles (scopeId, cssMap) {
-    if (this.taskCenter) {
-      this.taskCenter.send(
+    const taskCenter = getTaskCenter(this.id)
+    if (taskCenter && cssMap && cssMap.length) {
+      taskCenter.send(
         'dom',
         { action: 'registerStaticStyles' },
-        [scopeId || '@GLOBAL', cssMap || {}]
+        [scopeId || '@GLOBAL', cssMap]
       )
     }
   },

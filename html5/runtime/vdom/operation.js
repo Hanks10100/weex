@@ -66,15 +66,17 @@ export function uniqueId () {
 export function parseScopeId (attrs) {
   for (const key in attrs) {
     if (key.match(/^data-v-\w+/i)) {
-      delete attrs[key]
       return key
     }
   }
 }
 
-// TODO: make sure className is string
+function isString (str) {
+  return Object.prototype.toString.call(str) === '[object String]'
+}
+
 export function parseClassList (className) {
-  return className ? className.split(/\s+/) : []
+  return isString(className) ? className.split(/\s+/) : []
 }
 
 /**

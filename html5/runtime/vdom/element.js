@@ -336,10 +336,10 @@ Object.assign(Element.prototype, {
   /**
    * Set component class name.
    * @param {String | Array} className
+   * @param {String} scopeId
    */
   setClassName (className, scopeId) {
-    // TODO: make sure classList is an Array
-    this.classList = Array.isArray(className) ? className : String(className).split(/\s*/)
+    this.classList = parseClassList(className)
     scopeId ? (this.scopeId = scopeId) : (scopeId = this.scopeId)
     const taskCenter = getTaskCenter(this.docId)
     if (taskCenter) {
