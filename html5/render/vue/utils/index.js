@@ -92,11 +92,35 @@ export function nextFrame (callback) {
   runner(callback)
 }
 
-export function toCSSText (object) {
+// TODO: normalize styles
+export function normalizeStyles (styles) {
+  const realStyle = {}
+  for (const key in styles) {
+    const name = hyphenate(key)
+    let value = styles[key]
+
+    // TODO: add more reliable check
+    if (typeof value === 'number' && value !== 'line-height') {
+      // TODO: support more units
+      value += 'px'
+    }
+
+    realStyle[name] = value
+  }
+  return realStyle
+}
+
+// TODO: prefix or hack
+export function generateCSSText (key, value) {
+  return `${hyphenate(key)}:${value};`
+}
+
+export function toCSSText (object, rewriter = generateCSSText) {
   let cssText = ''
   if (object) {
-    for (const key in object) {
-      cssText += `${hyphenate(key)}:${object[key]};`
+    const styles = normalizeStyles(object)
+    for (const key in styles) {
+      cssText += rewriter(key, styles[key])
     }
   }
   return cssText
