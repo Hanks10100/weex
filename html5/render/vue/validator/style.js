@@ -47,7 +47,10 @@ export function fontStyle (value) {
 }
 
 export function fontWeight (value) {
-  return ['normal', 'bold', 'light', 'bolder', 'lighter'].indexOf(value) !== -1
+  return [
+    '100', '200', '300', '400', '500', '600', '700', '800', '900',
+    'normal', 'bold', 'light', 'bolder', 'lighter'
+  ].indexOf(String(value)) !== -1
 }
 
 export function textDecoration (value) {
