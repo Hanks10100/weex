@@ -1,6 +1,3 @@
-import '../styles/reset.css'
-import '../styles/components.css'
-
 // import 'lazyimg'
 import '../../browser/render/gesture'
 
@@ -15,6 +12,7 @@ import 'core-js/modules/es6.promise'
 
 import modules from '../modules'
 import weex from './weex'
+import { registerStaticStyles } from './css'
 
 // register built-in modules.
 weex.install(modules)
@@ -28,6 +26,7 @@ export function setVue (vue) {
 }
 
 window.weex = weex
+window.__register_static_styles__ = registerStaticStyles
 window.global = window
 
 export default weex

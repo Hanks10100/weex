@@ -5,6 +5,8 @@ export * from './lazyload'
 export * from './style'
 export * from './type'
 
+import { normalizeStyles } from './style'
+
 /**
  * Create a cached version of a pure function.
  */
@@ -71,11 +73,17 @@ export function nextFrame (callback) {
   runner(callback)
 }
 
-export function toCSSText (object) {
+// TODO: prefix or hack
+export function generateCSSText (key, value) {
+  return `${hyphenate(key)}:${value};`
+}
+
+export function toCSSText (object, rewriter = generateCSSText) {
   let cssText = ''
   if (object) {
-    for (const key in object) {
-      cssText += `${hyphenate(key)}:${object[key]};`
+    const styles = normalizeStyles(object)
+    for (const key in styles) {
+      cssText += rewriter(key, styles[key])
     }
   }
   return cssText
