@@ -5,7 +5,7 @@ export * from './lazyload'
 export * from './style'
 export * from './type'
 
-import { normalizeStyles } from './style'
+import { normalize } from './flex'
 
 /**
  * Create a cached version of a pure function.
@@ -71,6 +71,28 @@ export function nextFrame (callback) {
     || window.webkitRequestAnimationFrame
     || (cb => setTimeout(cb, 16))
   runner(callback)
+}
+
+/**
+ * add flex prefixes for compatibility conisderation.
+ */
+export function normalizeStyles (style) {
+  const styles = normalize(style)
+
+  const realStyle = {}
+  for (const key in styles) {
+    const name = hyphenate(key)
+    let value = styles[key]
+
+    // TODO: add more reliable check
+    if (typeof value === 'number' && value !== 'line-height') {
+      // TODO: support more units
+      value += 'px'
+    }
+
+    realStyle[name] = value
+  }
+  return realStyle
 }
 
 // TODO: prefix or hack
