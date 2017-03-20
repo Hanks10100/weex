@@ -1,10 +1,13 @@
-import './WXEnvironment'
+/* global Vue */
+
+import './wx-env'
 import * as utils from '../utils'
 import { requireWeexModule } from '../modules'
 
 const weexModules = {}
 
-export default {
+const weex = {
+  __vue__: null,
   utils,
   units: window.CSS_UNIT,
   config: {
@@ -43,6 +46,13 @@ export default {
     }
   },
 
+  registerComponent (name, component) {
+    if (!this.__vue__) {
+      return console.log('[Vue Render] Vue is not found. Please import Vue.js before register a component.')
+    }
+    this.__vue__.component(name, component)
+  },
+
   // @deprecated
   getRoot () {},
 
@@ -61,3 +71,14 @@ export default {
     module.init(this)
   }
 }
+
+; ['on', 'once', 'off', 'emit'].forEach(function (method) {
+  weex[method] = function (...args) {
+    if (!this._vue) {
+      this._vue = new Vue()
+    }
+    return this._vue[`$${method}`](...args)
+  }
+})
+
+export default weex

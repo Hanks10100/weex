@@ -10,14 +10,23 @@ import 'core-js/modules/es6.string.iterator'
 import 'core-js/modules/web.dom.iterable'
 import 'core-js/modules/es6.promise'
 
-export * from './viewport'
-
 import { registerStaticStyles } from './css'
-import { init } from '../modules'
+import modules from '../modules'
 import weex from './weex'
 
-init(weex)
+// register built-in modules.
+weex.install(modules)
+
+export function setVue (vue) {
+  if (!vue) {
+    throw new Error('[Vue Render] Vue not found. Please make sure vue 2.x runtime is imported.')
+  }
+  weex.__vue__ = vue
+  console.log(`[Vue Render] install Vue ${vue.version}.`)
+}
 
 window.weex = weex
 window.__register_static_styles__ = registerStaticStyles
 window.global = window
+
+export default weex

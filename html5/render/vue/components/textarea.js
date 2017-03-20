@@ -1,9 +1,7 @@
-import { base } from '../mixins'
 import { extend, mapFormEvents } from '../utils'
-import { validateStyles } from '../validator'
+// import { validateStyles } from '../validator'
 
 export default {
-  mixins: [base],
   props: {
     value: String,
     placeholder: String,
@@ -23,10 +21,9 @@ export default {
 
   render (createElement) {
     /* istanbul ignore next */
-    if (process.env.NODE_ENV === 'development') {
-      validateStyles('textarea', this.$vnode.data && this.$vnode.data.staticStyle)
-    }
-
+    // if (process.env.NODE_ENV === 'development') {
+    //   validateStyles('textarea', this.$vnode.data && this.$vnode.data.staticStyle)
+    // }
     return createElement('html:textarea', {
       attrs: {
         'weex-type': 'textarea',
@@ -36,8 +33,12 @@ export default {
         placeholder: this.placeholder,
         rows: this.rows
       },
-      on: extend(this.createEventMap(), mapFormEvents(this)),
-      staticClass: 'weex-textarea'
+      domProps: {
+        value: this.value
+      },
+      on: extend(this._createEventMap(), mapFormEvents(this)),
+      staticClass: 'weex-textarea weex-el',
+      staticStyle: this._normalizeInlineStyles(this.$vnode.data)
     }, this.value)
   }
 }

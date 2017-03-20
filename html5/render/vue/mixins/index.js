@@ -1,9 +1,9 @@
 import base from './base'
-import event from './event'
+import style from './style'
 import scrollable from './scrollable'
 
 export {
   base,
-  event,
+  style,
   scrollable
 }

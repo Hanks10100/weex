@@ -1,9 +1,12 @@
-import { base } from '../mixins'
+/**
+ * @fileOverview Input component.
+ * Support v-model only if vue version is large than 2.2.0
+ */
+
 import { extend, mapFormEvents } from '../utils'
-import { validateStyles } from '../validator'
+// import { validateStyles } from '../validator'
 
 export default {
-  mixins: [base],
   props: {
     type: {
       type: String,
@@ -30,12 +33,20 @@ export default {
     maxlength: [String, Number]
   },
 
+  methods: {
+    focus () {
+      this.$el && this.$el.focus()
+    },
+    blur () {
+      this.$el && this.$el.blur()
+    }
+  },
+
   render (createElement) {
     /* istanbul ignore next */
-    if (process.env.NODE_ENV === 'development') {
-      validateStyles('input', this.$vnode.data && this.$vnode.data.staticStyle)
-    }
-
+    // if (process.env.NODE_ENV === 'development') {
+    //   validateStyles('input', this.$vnode.data && this.$vnode.data.staticStyle)
+    // }
     return createElement('html:input', {
       attrs: {
         'weex-type': 'input',
@@ -46,8 +57,11 @@ export default {
         placeholder: this.placeholder,
         maxlength: this.maxlength
       },
-      on: extend(this.createEventMap(), mapFormEvents(this)),
-      staticClass: 'weex-input'
+      domProps: {
+        value: this.value
+      },
+      on: extend(this._createEventMap(), mapFormEvents(this)),
+      staticClass: 'weex-input weex-el'
     })
   }
 }

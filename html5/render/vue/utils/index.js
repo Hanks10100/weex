@@ -1,6 +1,9 @@
 export * from './func'
 export * from './event'
 export * from './component'
+export * from './lazyload'
+export * from './style'
+export * from './type'
 
 /**
  * Create a cached version of a pure function.
@@ -46,16 +49,6 @@ export function camelToKebab (name) {
   })
 }
 
-/**
- * Mix properties into target object.
- */
-export function extend (to, _from) {
-  for (const key in _from) {
-    to[key] = _from[key]
-  }
-  return to
-}
-
 export function appendStyle (css, styleId, replace) {
   let style = document.getElementById(styleId)
   if (style && replace) {
@@ -69,20 +62,6 @@ export function appendStyle (css, styleId, replace) {
     document.getElementsByTagName('head')[0].appendChild(style)
   }
   style.appendChild(document.createTextNode(css))
-}
-
-/**
- * Strict object type check. Only returns true
- * for plain JavaScript objects.
- *
- * @param {*} obj
- * @return {Boolean}
- */
-
-const toString = Object.prototype.toString
-const OBJECT_STRING = '[object Object]'
-export function isPlainObject (obj) {
-  return toString.call(obj) === OBJECT_STRING
 }
 
 export function nextFrame (callback) {
