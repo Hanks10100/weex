@@ -26,7 +26,7 @@ export function registerStaticStyles (scopeId, cssMaps) {
         }
         styles.push(`${getSelector(key, scopeId)}{${toCSSText(css[key])}}`)
       }
-      return styles.join(' ')
+      return styles.join('\n')
     }))
   }
 }
